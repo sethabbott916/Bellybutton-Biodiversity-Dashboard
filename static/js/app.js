@@ -26,7 +26,28 @@ d3.json("samples.json").then((data) => {
     var wfreq = metadata.map(metadata =>  metadata.wfreq);
     console.log(wfreq)
 
-    
+    var dropdownMenu = d3.select("#selDataset");
+
+    meta_id.forEach((id) => {
+        var row = dropdownMenu.append("option");
+        row.text(id);
+        console.log(id)
+    });
 
 });
+
+function unpack(rows, index) {
+    return rows.map(function(row) {
+      return row[index];
+    });
+  }
+
+function optionChanged(value) {
+    console.log(value);
+    yo = unpack(metadata.id.value, 0);
+    console.log(yo)
+}
+
+
+
 
