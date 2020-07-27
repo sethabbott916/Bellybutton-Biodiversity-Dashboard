@@ -86,13 +86,11 @@ d3.json("samples.json").then(function(data){
   // Plot the chart to a div tag with id "bar-plot"
     Plotly.newPlot("bar", bardata);
 
+
+
 });
 
-function unpack(rows, index) {
-    return rows.map(function(row) {
-      return row[index];
-    });
-  }    
+
 
     // This function is called when a dropdown menu item is selected
 function optionChanged(value) {
@@ -126,7 +124,25 @@ function optionChanged(value) {
         var otu_labels = sampledata.map(samples =>  samples.otu_labels);
         console.log(otu_labels)
 
-
+        var trace2 = {
+            x: otu_ids[0],
+            y: svalues[0],
+            text: otu_labels[0],
+            mode: 'markers',
+            marker: {
+              color: otu_ids[0],
+              size: svalues[0]
+            }
+          };
+          
+        var bubbledata = [trace2];
+          
+        var layout = {
+            title: "OTU ID",
+            showlegend: false
+        };
+          
+        Plotly.newPlot('bubble', bubbledata, layout);
 
 
         var topsvalues = svalues[0].slice(0, 10);
