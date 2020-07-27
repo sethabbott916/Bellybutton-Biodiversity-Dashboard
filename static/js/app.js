@@ -98,6 +98,53 @@ function optionChanged(value) {
         var wfreq = currentdata[0].wfreq
         buildTable(meta_id, ethnicity, gender, age, location, bbtype, wfreq);
 
+        var sampledata = Object.values(data.samples);
+        sampledata = sampledata.filter(row => row.id == dropvalue);
+        console.log(sampledata)
+
+        var svalues = sampledata.map(samples =>  samples.sample_values);
+        console.log(svalues)
+        var otu_ids = sampledata.map(samples =>  samples.otu_ids);
+        console.log(otu_ids)
+        var otu_labels = sampledata.map(samples =>  samples.otu_labels);
+        console.log(otu_labels)
+
+
+        var topsvalues = svalues[0].slice(0, 10);
+        var topotuids = otu_ids[0].slice(0, 10);
+        var hoverotu = otu_labels[0].slice(0, 10);
+        console.log(hoverotu)
+        
+        barlabels = []
+        for (var i = 0; i < 10; i++) {
+            barlabels[i] = "OTU " + topotuids[i]; 
+        }
+        console.log(barlabels)
+
+        var topsvalues = topsvalues.reverse();
+
+        var barlabels = barlabels.reverse();
+        console.log(barlabels);
+
+        var trace = {
+            x: topsvalues,
+            y: barlabels,
+            text: hoverotu,
+            type: "bar",
+            orientation: "h"
+        };
+
+        var bardata = [trace];
+
+    // Define the plot layout
+        var layout = {
+        xaxis: { title: "Sample Value" },
+        yaxis: { title: "OTU ID"}
+        };
+
+    // Plot the chart to a div tag with id "bar-plot"
+        Plotly.newPlot("bar", bardata, layout);
+
 
         
         function buildTable(meta_id, ethnicity, gender, age, location, bbtype, wfreq) {
