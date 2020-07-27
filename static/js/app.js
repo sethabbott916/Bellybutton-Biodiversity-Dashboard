@@ -1,10 +1,11 @@
-
-d3.json("samples.json").then((data) => {
+d3.json("samples.json").then(function(data){
     console.log(data);
     var sampledata = Object.values(data.samples);
     console.log(sampledata);
     var metadata = Object.values(data.metadata);
     console.log(metadata);
+    var namedata = Object.values(data.names);
+    console.log(namedata);
     var svalues = sampledata.map(samples =>  samples.sample_values);
     console.log(svalues)
     var otu_ids = sampledata.map(samples =>  samples.otu_ids);
@@ -28,25 +29,32 @@ d3.json("samples.json").then((data) => {
 
     var dropdownMenu = d3.select("#selDataset");
 
-    meta_id.forEach((id) => {
+    namedata.forEach((name) => {
         var row = dropdownMenu.append("option");
-        row.text(id);
-        console.log(id)
+        row.text(name);
+        console.log(name)
     });
-
 });
 
-function unpack(rows, index) {
-    return rows.map(function(row) {
-      return row[index];
-    });
-  }
+d3.selectAll("#selDataset").on("change", optionChanged);
 
-function optionChanged(value) {
-    console.log(value);
-    yo = unpack(metadata.id.value, 0);
-    console.log(yo)
-}
+
+    // This function is called when a dropdown menu item is selected
+    function optionChanged(value) {
+            
+        // Use D3 to select the dropdown menu
+        var dropdownMenu = d3.select("#selDataset");
+        // Assign the value of the dropdown menu option to a variable
+        var dropvalue = dropdownMenu.property("value");
+         console.log(dropvalue)
+
+        currentdata = sampledata.filter(row => row.id == dropvalue); 
+         console.log(currentdata)
+    };
+
+
+
+
 
 
 
