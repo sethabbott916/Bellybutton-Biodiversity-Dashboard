@@ -116,15 +116,19 @@ function optionChanged(value) {
         console.log(hoverotu)
         
         barlabels = []
-        for (var i = 0; i < 10; i++) {
+        
+        for (var i = 0; i < 10 ; i++) {
+            //fixed bug for subjects with less than 10 results
+            if (topotuids[i] !== undefined){
             barlabels[i] = "OTU " + topotuids[i]; 
-        }
+            }
+        };
         console.log(barlabels)
 
-        var topsvalues = topsvalues.reverse();
 
+        var topsvalues = topsvalues.reverse();
         var barlabels = barlabels.reverse();
-        console.log(barlabels);
+
 
         var trace = {
             x: topsvalues,
