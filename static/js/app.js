@@ -15,6 +15,7 @@ d3.json("samples.json").then(function(data){
     var location = metadata.map(metadata =>  metadata.location);
     var bbtype = metadata.map(metadata =>  metadata.bbtype);
     var wfreq = metadata.map(metadata =>  metadata.wfreq);
+    console.log(wfreq)
     initTable(meta_id, ethnicity, gender, age, location, bbtype, wfreq)
     var dropdownMenu = d3.select("#selDataset");
 
@@ -50,6 +51,27 @@ d3.json("samples.json").then(function(data){
     var barlabels = barlabels.reverse();
     console.log(barlabels);
 
+
+    var trace2 = {
+        x: otu_ids[0],
+        y: svalues[0],
+        text: otu_labels[0],
+        mode: 'markers',
+        marker: {
+          color: otu_ids[0],
+          size: svalues[0]
+        }
+      };
+      
+    var bubbledata = [trace2];
+      
+    var layout = {
+        title: "OTU ID",
+        showlegend: false
+    };
+      
+    Plotly.newPlot('bubble', bubbledata, layout);
+
     var trace = {
         x: topsvalues,
         y: barlabels,
@@ -60,14 +82,9 @@ d3.json("samples.json").then(function(data){
 
     var bardata = [trace];
 
-  // Define the plot layout
-    var layout = {
-    xaxis: { title: "Sample Value" },
-    yaxis: { title: "OTU ID"}
-    };
 
   // Plot the chart to a div tag with id "bar-plot"
-    Plotly.newPlot("bar", bardata, layout);
+    Plotly.newPlot("bar", bardata);
 
 });
 
@@ -110,10 +127,11 @@ function optionChanged(value) {
         console.log(otu_labels)
 
 
+
+
         var topsvalues = svalues[0].slice(0, 10);
         var topotuids = otu_ids[0].slice(0, 10);
         var hoverotu = otu_labels[0].slice(0, 10);
-        console.log(hoverotu)
         
         barlabels = []
         
@@ -123,7 +141,6 @@ function optionChanged(value) {
             barlabels[i] = "OTU " + topotuids[i]; 
             }
         };
-        console.log(barlabels)
 
 
         var topsvalues = topsvalues.reverse();
@@ -140,14 +157,9 @@ function optionChanged(value) {
 
         var bardata = [trace];
 
-    // Define the plot layout
-        var layout = {
-        xaxis: { title: "Sample Value" },
-        yaxis: { title: "OTU ID"}
-        };
 
     // Plot the chart to a div tag with id "bar-plot"
-        Plotly.newPlot("bar", bardata, layout);
+        Plotly.newPlot("bar", bardata);
 
 
         
