@@ -195,6 +195,26 @@ function optionChanged(value) {
     // Plot the chart to a div tag with id "bar-plot"
         Plotly.newPlot("bar", bardata);
 
+        var gaugedata = [
+            {
+              domain: { x: [0, 1], y: [0, 1] },
+              value: wfreq,
+              title: { text: "Belly Button Washing Frequency: Scrubs per Week" },
+              type: "indicator",
+              mode: "gauge+number",
+              gauge: {
+                axis: { range: [null, 9] },
+                steps: [
+                  { range: [0, 6], color: "lightgray" },
+                  { range: [6, 9], color: "lightblue" }
+                ],
+                }
+            }
+        ];
+          
+        var gaugelayout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
+        Plotly.newPlot('gauge', gaugedata, gaugelayout);
+
 
         
         function buildTable(meta_id, ethnicity, gender, age, location, bbtype, wfreq) {
