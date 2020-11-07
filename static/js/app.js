@@ -3,14 +3,11 @@
 d3.json("data/samples.json").then(function(data){
 
     //extract values from dataset and assign them to variables
-    console.log(data);
     var sampledata = Object.values(data.samples);
     var metadata = Object.values(data.metadata);
     var namedata = Object.values(data.names);
     var svalues = sampledata.map(samples =>  samples.sample_values);
-    console.log(svalues)
     var otu_ids = sampledata.map(samples =>  samples.otu_ids);
-    console.log(otu_ids)
     var otu_labels = sampledata.map(samples =>  samples.otu_labels);
     var meta_id = metadata.map(metadata =>  metadata.id);
     var ethnicity = metadata.map(metadata =>  metadata.ethnicity);
@@ -19,7 +16,6 @@ d3.json("data/samples.json").then(function(data){
     var location = metadata.map(metadata =>  metadata.location);
     var bbtype = metadata.map(metadata =>  metadata.bbtype);
     var wfreq = metadata.map(metadata =>  metadata.wfreq);
-    console.log(wfreq)
 
     //Build table with rows for each different value availavle for that subject
     initTable(meta_id, ethnicity, gender, age, location, bbtype, wfreq)
@@ -48,19 +44,16 @@ d3.json("data/samples.json").then(function(data){
     var topsvalues = svalues[0].slice(0, 10);
     var topotuids = otu_ids[0].slice(0, 10);
     var hoverotu = otu_labels[0].slice(0, 10);
-    console.log(hoverotu)
     
     //loop to create labels for top microbes
     barlabels = []
     for (var i = 0; i < 10; i++) {
         barlabels[i] = "OTU " + topotuids[i]; 
     }
-    console.log(barlabels)
 
     //Reverse values so that bar graph puts higher values at the top
     var topsvalues = topsvalues.reverse();
     var barlabels = barlabels.reverse();
-    console.log(barlabels);
 
     //specify data being represented in bubble chart
     var trace2 = {
@@ -99,6 +92,7 @@ d3.json("data/samples.json").then(function(data){
   // Plot the chart to a div tag with id "bar-plot"
     Plotly.newPlot("bar", bardata);
 
+    //define plot type and data contained
     var gaugedata = [
         {
           domain: { x: [0, 1], y: [0, 1] },
@@ -116,25 +110,26 @@ d3.json("data/samples.json").then(function(data){
         }
     ];
       
+    //define layout of the gauge plot
     var gaugelayout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
+
+    //Plot to div: "gauge"
     Plotly.newPlot('gauge', gaugedata, gaugelayout);
     
 });
 
 
 
-    // This function is called when a dropdown menu item is selected
+// This function is called when a dropdown menu item is selected
 function optionChanged(value) {
             
     var dropdownMenu = d3.select("#selDataset");
     var dropvalue = dropdownMenu.property("value");
-    console.log(dropvalue);
 
     d3.json("data/samples.json").then(function(data){
 
         var metadata = Object.values(data.metadata);
         currentdata = metadata.filter(row => row.id == dropvalue); 
-        console.log(currentdata)
         var meta_id = currentdata[0].id
         var ethnicity = currentdata[0].ethnicity
         var gender = currentdata[0].gender
@@ -146,14 +141,10 @@ function optionChanged(value) {
 
         var sampledata = Object.values(data.samples);
         sampledata = sampledata.filter(row => row.id == dropvalue);
-        console.log(sampledata)
 
         var svalues = sampledata.map(samples =>  samples.sample_values);
-        console.log(svalues)
         var otu_ids = sampledata.map(samples =>  samples.otu_ids);
-        console.log(otu_ids)
         var otu_labels = sampledata.map(samples =>  samples.otu_labels);
-        console.log(otu_labels)
 
         var trace2 = {
             x: otu_ids[0],
