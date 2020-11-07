@@ -20,6 +20,8 @@ d3.json("data/samples.json").then(function(data){
     var bbtype = metadata.map(metadata =>  metadata.bbtype);
     var wfreq = metadata.map(metadata =>  metadata.wfreq);
     console.log(wfreq)
+
+    //Build table with rows for each different value availavle for that subject
     initTable(meta_id, ethnicity, gender, age, location, bbtype, wfreq)
     var dropdownMenu = d3.select("#selDataset");
 
@@ -30,7 +32,7 @@ d3.json("data/samples.json").then(function(data){
         row.text(name);
     });
 
-    //Build a table with summary data for the subject
+    //Populate table with summary data for the subject
     function initTable(meta_id, ethnicity, gender, age, location, bbtype, wfreq) {
         var table = d3.select("#sample-metadata");
         table.append("tbody").text("ID: " + meta_id[0]);
@@ -42,13 +44,13 @@ d3.json("data/samples.json").then(function(data){
         table.append("tbody").text("wfreq: " + wfreq[0])
     };
 
-    // slice top ten microbes with the highest values
+    // assign data for microbes with the highest values to variables
     var topsvalues = svalues[0].slice(0, 10);
     var topotuids = otu_ids[0].slice(0, 10);
     var hoverotu = otu_labels[0].slice(0, 10);
     console.log(hoverotu)
     
-    //loop to create labels for top OTU's
+    //loop to create labels for top microbes
     barlabels = []
     for (var i = 0; i < 10; i++) {
         barlabels[i] = "OTU " + topotuids[i]; 
@@ -60,7 +62,7 @@ d3.json("data/samples.json").then(function(data){
     var barlabels = barlabels.reverse();
     console.log(barlabels);
 
-
+    //specify data being represented in bubble chart
     var trace2 = {
         x: otu_ids[0],
         y: svalues[0],
@@ -73,23 +75,25 @@ d3.json("data/samples.json").then(function(data){
       };
       
     var bubbledata = [trace2];
-      
+    
+    //define layout for bubble chart
     var layout = {
         title: "OTU ID",
         showlegend: false
     };
       
+    //plot bubble chart to div: "bubble"
     Plotly.newPlot('bubble', bubbledata, layout);
 
-    var trace = {
+    //define data input for bar chart 
+    //(must be an object so put dictionary within "[]")
+    var bardata = [{
         x: topsvalues,
         y: barlabels,
         text: hoverotu,
         type: "bar",
         orientation: "h"
-    };
-
-    var bardata = [trace];
+    }];
 
 
   // Plot the chart to a div tag with id "bar-plot"
@@ -189,19 +193,16 @@ function optionChanged(value) {
         var topsvalues = topsvalues.reverse();
         var barlabels = barlabels.reverse();
 
-
-        var trace = {
+        // define data for bar plot and put it in object format
+        var bardata = [{
             x: topsvalues,
             y: barlabels,
             text: hoverotu,
             type: "bar",
             orientation: "h"
-        };
+        }];
 
-        var bardata = [trace];
-
-
-    // Plot the chart to a div tag with id "bar-plot"
+    // Plot the chart to a div tag with id "bar"
         Plotly.newPlot("bar", bardata);
 
         var gaugedata = [
