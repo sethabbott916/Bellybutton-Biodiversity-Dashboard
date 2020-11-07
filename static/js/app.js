@@ -1,4 +1,8 @@
-d3.json("samples.json").then(function(data){
+
+//Open json file containing sample data first
+d3.json("data/samples.json").then(function(data){
+
+    //extract values from dataset and assign them to variables
     console.log(data);
     var sampledata = Object.values(data.samples);
     var metadata = Object.values(data.metadata);
@@ -19,11 +23,14 @@ d3.json("samples.json").then(function(data){
     initTable(meta_id, ethnicity, gender, age, location, bbtype, wfreq)
     var dropdownMenu = d3.select("#selDataset");
 
+    
+    // append a dropdown menu option for each unique subject
     namedata.forEach((name) => {
         var row = dropdownMenu.append("option");
         row.text(name);
     });
 
+    //Build a table with summary data for the subject
     function initTable(meta_id, ethnicity, gender, age, location, bbtype, wfreq) {
         var table = d3.select("#sample-metadata");
         table.append("tbody").text("ID: " + meta_id[0]);
@@ -35,19 +42,21 @@ d3.json("samples.json").then(function(data){
         table.append("tbody").text("wfreq: " + wfreq[0])
     };
 
+    // slice top ten microbes with the highest values
     var topsvalues = svalues[0].slice(0, 10);
     var topotuids = otu_ids[0].slice(0, 10);
     var hoverotu = otu_labels[0].slice(0, 10);
     console.log(hoverotu)
     
+    //loop to create labels for top OTU's
     barlabels = []
     for (var i = 0; i < 10; i++) {
         barlabels[i] = "OTU " + topotuids[i]; 
     }
     console.log(barlabels)
 
+    //Reverse values so that bar graph puts higher values at the top
     var topsvalues = topsvalues.reverse();
-
     var barlabels = barlabels.reverse();
     console.log(barlabels);
 
@@ -117,7 +126,7 @@ function optionChanged(value) {
     var dropvalue = dropdownMenu.property("value");
     console.log(dropvalue);
 
-    d3.json("samples.json").then(function(data){
+    d3.json("data/samples.json").then(function(data){
 
         var metadata = Object.values(data.metadata);
         currentdata = metadata.filter(row => row.id == dropvalue); 
